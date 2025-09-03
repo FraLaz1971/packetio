@@ -7,8 +7,12 @@ int main() {
     int i,j,npkt;
     int debug=0;
     size_t res;
+    char fname[32];
+    puts("insert the filename to read");
+    scanf("%s",fname);
+    printf("going to read file %s\n",fname);
    // Open the binary file for reading
-   FILE *wf = fopen("packets.ccsds", "rb");
+   FILE *wf = fopen(fname, "rb");
    
    // Check if file open successfully
    if (!wf) { 
@@ -21,7 +25,7 @@ int main() {
    npkt=0;
 while (npkt<NMAX){
 	if(debug) printf("reading packet n.%d\n",npkt);
-   for (j = 0; j < 6; j++){
+   for (j = 0; j < 7; j++){
        res = fread(&word[j], 2, 1, wf);
        if(!res) break;
        if(debug) printf("j:%d res:%lu\n",j,res);
@@ -50,6 +54,9 @@ while (npkt<NMAX){
 	   case 5:
 			rpkt[npkt].data[2]=word[j];
 			break;
+	   case 6:
+			rpkt[npkt].data[3]=word[j];
+			break;
 	  default:
 			printf("illegal value of j\n");
 	}
@@ -76,6 +83,7 @@ while (npkt<NMAX){
        printf("%d d1: %d\n",i, rpkt[i].data[0]); // first data word
        printf("%d d2: %d\n",i, rpkt[i].data[1]); // second data word
        printf("%d d3: %d\n",i, rpkt[i].data[2]); // third data word
+       printf("%d d4: %d\n",i, rpkt[i].data[3]); // fourth data word
        printf("\n");
    }
 	printf("read %d packets\n",npkt);
