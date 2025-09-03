@@ -20,7 +20,7 @@
  * 
  * 
  */
-#define NMAX 2048
+#define NMAX 4000
 
 
 // Define the structure to store student details
@@ -36,7 +36,10 @@ struct Packet {
 // third 16 bits
     unsigned short int len;// packet length (16bit)
 // following words
-    unsigned short int  data[1024];// data field
+    unsigned short int  data[1024];// data field filled with n*16bit
+// last byte
+	unsigned char lastbyte;// last byte of the datafield if composed by
+						  // an odd number of bytes
 };
 
 int swapword(unsigned short int *w){

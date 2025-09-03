@@ -2,7 +2,7 @@ CC=gcc -Wall
 LD=gcc
 RM=rm -f
 CFLAGS=-c
-LDFLAGS=-o
+LDFLAGS=-lm
 
 .PHONY: all clean packets
 all: writepackets readpackets
@@ -11,13 +11,13 @@ readpackets.o: readpackets.c packets.h
 	$(CC) $(CFLAGS) $<
 
 readpackets: readpackets.o
-	$(LD) $< $(LDFLAGS) $@
+	$(LD) $< -o $@ $(LDFLAGS)
 
 writepackets.o: writepackets.c packets.h
 	$(CC) $(CFLAGS) $<
 
 writepackets: writepackets.o
-	$(LD) $< $(LDFLAGS) $@
+	$(LD) $< -o $@ $(LDFLAGS)
 
 packets: packets.ccsds
 
