@@ -53,7 +53,7 @@ int main() {
 // 49152
 // 16383
 
-   for (int i = 0; i < npkt; i++){
+   for (i = 0; i < npkt; i++){
    printf("%d+%d+%d+%d\n",wpkt[i].ver<<13,wpkt[i].type<<12,wpkt[i].shf<<11,wpkt[i].apid);
    word[0]=(wpkt[i].ver<<13)+(wpkt[i].type<<12)+(wpkt[i].shf<<11)+wpkt[i].apid;
    printf("%d+%d\n",wpkt[i].sf<<14,wpkt[i].ssc);
