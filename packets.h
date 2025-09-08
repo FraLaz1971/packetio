@@ -25,7 +25,7 @@
 #define MAXDATA 512
 int debug=0;
 
-// Define the structure to store student details
+// Define the structure to store ccsds telemetry packets
 struct Packet {
 // first 16 bits
     unsigned char ver; // version number (3bit)
