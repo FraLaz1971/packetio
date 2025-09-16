@@ -22,9 +22,9 @@
  */
 #include <limits.h>
 #define NMAX 512
-#define MAXDATA 512
+#define MAXDATA 32762
 #define MAXWORD 32768
-int debug=1;
+int debug=0;
 
 
 struct DDSheader {
@@ -54,7 +54,7 @@ struct Packet {
 // third 16 bits
     unsigned short int len;// packet length (16bit)
 // following words
-    unsigned short int  data[MAXDATA];// data field filled with n*16bit
+    unsigned short int  *data;// data field filled with n*16bit
 // last byte
 	unsigned char lastbyte;// last byte of the datafield if composed by
 						  // an odd number of bytes

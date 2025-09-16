@@ -29,6 +29,7 @@ int main() {
    
    struct DDSheader dhd[NMAX];
    struct Packet rpkt[NMAX];
+   
    npkt=0;
 while (npkt<ULONG_MAX){
    if(debug) printf("reading packet n.%lld\n",npkt);
@@ -64,6 +65,7 @@ while (npkt<ULONG_MAX){
 				w2=hword[k];
 				dhd[npkt%NMAX].pkt_len=(w1<<16)+w2;
              if(debug) printf("pkt_len: %lu\n",dhd[npkt%NMAX].pkt_len);
+			 rpkt[npkt%NMAX].data=(unsigned short*)malloc(((dhd[npkt%NMAX].pkt_len)/2)*sizeof(unsigned short));
 		   break;
 		   case 6:
 				dhd[npkt%NMAX].gr_st_id=hword[k];
@@ -118,7 +120,7 @@ while (npkt<ULONG_MAX){
        if(debug) printf("read word: %lld\n",j);
        if(!res)  break;
        if(debug) printf("j:%lld res:%lu\n",j,res);
-       // decode the i word
+       // decode the word
        swapword(&word[j]);
        rpkt[npkt%NMAX].data[(j-3)%MAXDATA]=word[j];
    }
@@ -156,6 +158,7 @@ while (npkt<ULONG_MAX){
  // end last byte if odd number of bytes
 	   }
        printf("\n");
+    free(rpkt[npkt%NMAX].data);
    npkt++;
 }
    // Close the file after reading
