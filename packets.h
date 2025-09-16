@@ -22,7 +22,7 @@
  */
 #include <limits.h>
 #define NMAX 512
-#define MAXDATA 32762
+#define MAXDATA 32766
 #define MAXWORD 32768
 int debug=0;
 

@@ -4,17 +4,18 @@
 #include<math.h>
 #include "packets.h"
 int main() {
-	unsigned short int word[32771];
+    unsigned short int *word;
     unsigned long long int j,npkt;
-    int debug=0;
     size_t res;
-    char fname[32];
+    char fname[1024];
     unsigned char mybyte;
     puts("insert the filename to read");
     scanf("%s",fname);
     printf("going to read file %s\n",fname);
    // Open the binary file for reading
+   word=(unsigned short*)malloc(MAXWORD*sizeof(unsigned short));
    FILE *wf = fopen(fname, "rb");
+   if(debug) printf("open file for reading\n");
    
    // Check if file open successfully
    if (!wf) { 
@@ -58,6 +59,7 @@ while (npkt<ULONG_MAX){
               printf("illegal value of j: %lld\n",j);
         }
    }
+   rpkt[npkt%NMAX].data=(unsigned short*)malloc(MAXDATA*sizeof(unsigned short));
    if(debug) printf("max word: %hu\n",3+(rpkt[npkt%NMAX].len+1)/2);
    for (j=3; j<3+(rpkt[npkt%NMAX].len+1)/2;j++){
        res = fread(&word[j], 2, 1, wf);
@@ -92,10 +94,12 @@ while (npkt<ULONG_MAX){
  // end last byte if odd number of bytes
 	   }
        printf("\n");
+   free(rpkt[npkt%NMAX].data);
    npkt++;
 }
    // Close the file after reading
    fclose(wf);
+   free(word);
 	printf("read %lld packets\n",npkt);
    return 0;
 }
