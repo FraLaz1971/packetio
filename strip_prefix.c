@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
   int i,cnt;
   unsigned char prefix[18];
@@ -41,5 +41,6 @@ main(int argc, char **argv)
   }
   fclose(rf);
   fprintf(stderr,"processed %d packets\n",cnt-1);
+  return 0;
 }
 

@@ -21,9 +21,25 @@
  * 
  */
 #include <limits.h>
-#define NMAX 4000
+#define NMAX 512
 #define MAXDATA 512
-int debug=0;
+#define MAXWORD 32768
+int debug=1;
+
+
+struct DDSheader {
+	/* SCET */
+	unsigned int sec_msw; /* 16 bit */
+	unsigned int sec_lsw; /* 16 bit */
+	unsigned int usec_msw; /* 16 bit */
+	unsigned int usec_lsw; /* 16 bit */
+	unsigned long int pkt_len; /*32 bit n. of bytes in the data packet excluding the dds header */
+	unsigned short gr_st_id; /* 16 bit ground station ID*/
+	unsigned short vc_id; /* 16 bit virtual channel ID*/
+	unsigned char sle_serv; /* 8 bit sle service channel and data type */
+	unsigned char time_qual; /*8 bit, 0 = good, 1 = inaccurate, 2 = bad */
+	double time;
+};
 
 // Define the structure to store ccsds telemetry packets
 struct Packet {
