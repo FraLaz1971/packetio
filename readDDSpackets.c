@@ -11,7 +11,6 @@ int main() {
     size_t res;
     char fname[1024];
     unsigned char mybyte;
-    debug=0;
     puts("insert the filename to read");
     scanf("%s",fname);
     printf("going to read file %s\n",fname);
@@ -85,7 +84,7 @@ while (npkt<ULONG_MAX){
               printf("illegal value of k: %lld\n",k);
 	   }
    }
-   for (j = 0; j < 3; j++){
+   for (j = 0; j < 8; j++){
        res = fread(&word[j], 2, 1, wf);
               if(!res) break;
        swapword(&word[j]);
@@ -110,19 +109,50 @@ while (npkt<ULONG_MAX){
          rpkt[npkt%NMAX].len = word[j];
 		 if (debug) printf("length:%hu\n",rpkt[npkt%NMAX].len);
 	   break;
+       case 3:
+         rpkt[npkt%NMAX].dfh.spare0 = (word[j]&32768)>>15;
+         rpkt[npkt%NMAX].dfh.pus_ver = (word[j]&28672)>>12;
+         rpkt[npkt%NMAX].dfh.spare1 = (word[j]&3840)>>8;
+         rpkt[npkt%NMAX].dfh.type = word[j]&255;
+		 if (debug) printf("spare0:%hu\n",rpkt[npkt%NMAX].dfh.spare0);
+		 if (debug) printf("pus_ver:%hu\n",rpkt[npkt%NMAX].dfh.pus_ver);
+		 if (debug) printf("spare1:%hu\n",rpkt[npkt%NMAX].dfh.spare1);
+		 if (debug) printf("s.type:%hu\n",rpkt[npkt%NMAX].dfh.type);
+	   break;
+       case 4:
+         rpkt[npkt%NMAX].dfh.subtype = (word[j]&65280)>>8;
+		 if (debug) printf("subtype:%hu\n",rpkt[npkt%NMAX].dfh.subtype);
+         rpkt[npkt%NMAX].dfh.dest = word[j]&255;
+		 if (debug) printf("dest:%hu\n",rpkt[npkt%NMAX].dfh.dest);
+	   break;
+       case 5:
+         rpkt[npkt%NMAX].dfh.sec_msw = word[j];
+		 if (debug) printf("sec_msw:%hu\n",rpkt[npkt%NMAX].dfh.sec_msw);
+       case 6:
+         rpkt[npkt%NMAX].dfh.sec_lsw = word[j];
+		 if (debug) printf("sec_lsw:%hu\n",rpkt[npkt%NMAX].dfh.sec_lsw);
+	   break;
+       case 7:
+         rpkt[npkt%NMAX].dfh.subsec = word[j];
+		 if (debug) printf("subsec:%hu\n",rpkt[npkt%NMAX].dfh.subsec);
+	   break;
        default:
               printf("illegal value of j: %lld\n",j);
         }
+        
    }
+   rpkt[npkt%NMAX].dfh.time=(double)((rpkt[npkt%NMAX].dfh.sec_msw<<16)+rpkt[npkt%NMAX].dfh.sec_lsw)+\
+   rpkt[npkt%NMAX].dfh.subsec*.0000152587890625;
+
    if(debug) printf("max word: %hu\n",3+(rpkt[npkt%NMAX].len+1)/2);
-   for (j=3; j<3+(rpkt[npkt%NMAX].len+1)/2;j++){
+   for (j=8; j<3+(rpkt[npkt%NMAX].len+1)/2;j++){
        res = fread(&word[j], 2, 1, wf);
-       if(debug) printf("read word: %lld\n",j);
+/*       if(debug) printf("read word: %lld\n",j); */
        if(!res)  break;
-       if(debug) printf("j:%lld res:%lu\n",j,res);
-       // decode the word
+/*       if(debug) printf("j:%lld res:%lu\n",j,res);*/
+       // decode the word if applicable
        swapword(&word[j]);
-       rpkt[npkt%NMAX].data[(j-3)%MAXDATA]=word[j];
+       rpkt[npkt%NMAX].data[(j-8)%MAXDATA]=word[j];
    }
    if(fmod((rpkt[npkt%NMAX].len+1),2) != 0.0)  {
        res = fread(&mybyte, 1, 1, wf);
@@ -149,8 +179,18 @@ while (npkt<ULONG_MAX){
  // end 2nd 16 bits word
        printf("%lld len: %hu\n",npkt, rpkt[npkt%NMAX].len); // packet length (bytes-1 more)
  // end 3rd 16 bits word
-   for (j=3; j<3+(rpkt[npkt%NMAX].len+1)/2;j++){
-           printf("%lld d%lld: %hu\n",npkt, j-3,rpkt[npkt%NMAX].data[(j-3)%MAXDATA]); // j data word
+	   printf("%lld spare0: %hu\n",npkt,rpkt[npkt%NMAX].dfh.spare0);
+	   printf("%lld pus_ver: %hu\n",npkt,rpkt[npkt%NMAX].dfh.pus_ver);
+	   printf("%lld spare1: %hu\n",npkt,rpkt[npkt%NMAX].dfh.spare1);
+	   printf("%lld s.type: %hu\n",npkt,rpkt[npkt%NMAX].dfh.type);
+	   printf("%lld subtype: %hu\n",npkt,rpkt[npkt%NMAX].dfh.subtype);
+	   printf("%lld dest: %hu\n",npkt,rpkt[npkt%NMAX].dfh.dest);
+	   printf("%lld sec_msw: %hu\n",npkt,rpkt[npkt%NMAX].dfh.sec_msw);
+	   printf("%lld sec_lsw: %hu\n",npkt,rpkt[npkt%NMAX].dfh.sec_lsw);
+       printf("%lld subsec: %hu\n",npkt,rpkt[npkt%NMAX].dfh.subsec);
+       printf("%lld dfh.time: %f\n",npkt,rpkt[npkt%NMAX].dfh.time);
+   for (j=8; j<3+(rpkt[npkt%NMAX].len+1)/2;j++){
+           printf("%lld d%lld: %hu\n",npkt, j-8,rpkt[npkt%NMAX].data[(j-8)%MAXDATA]); // j data word
       }
  // end all the 16 bit words
    if(fmod((rpkt[npkt%NMAX].len+1),2) != 0){

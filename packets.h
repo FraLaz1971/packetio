@@ -26,7 +26,18 @@
 #define MAXWORD 32771
 int debug=0;
 
-
+struct BC_DFH{
+	unsigned char spare0; /* 1 bit 0b0 */
+	unsigned char pus_ver; /* 3 bit PUS Versioni 0b001  */
+	unsigned char spare1; /* 4 bit 0b0000 */
+	unsigned char type; /* 8 bit service type */
+	unsigned char subtype; /* 8 bit service subtype */
+	unsigned char dest; /* 8 bit destination ID */
+	unsigned int sec_msw; /* 16 bit seconds MSW */
+	unsigned int sec_lsw; /* 16 bit seconds LSW */
+	unsigned int subsec; /* 16 bit subseconds s*(1/2^16) */	
+	double time; /* time reconstructed from all the fields */
+};
 struct DDSheader {
 	/* SCET */
 	unsigned int sec_msw; /* 16 bit */
@@ -48,11 +59,15 @@ struct Packet {
     unsigned char type;// packet type (1bit)
     unsigned char shf;// secondary header flag (1bit)
     unsigned short int apid;// (11bit)
+/* adding PID and CAT P(ID<<4)+CAT == APID */
+    unsigned short pid; /* process ID*/
+    unsigned char cat; /* category */
 // second 16 bits
     unsigned char sf;// sequence flag (2bit)
     unsigned short int ssc;// sequence counter (14bit)
 // third 16 bits
     unsigned short int len;// packet length (16bit)
+    struct BC_DFH dfh;
 // following words
     unsigned short int  *data;// data field filled with n*16bit
 // last byte
@@ -61,7 +76,6 @@ struct Packet {
 };
 
 int swapword(unsigned short int *w){
-  int debug = 0;
   int status = 0;
   unsigned short int b1,b2;
   if (debug) printf("input word:%d\n",*w);
