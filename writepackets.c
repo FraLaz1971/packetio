@@ -27,7 +27,6 @@ int main() {
        printf("Cannot open file!\n");
        return 1;
    }
-   word=(unsigned short *)malloc(MAXWORD*sizeof(unsigned short));
    // Initialize packet data
    struct Packet wpkt[NMAX];
  for(i=0;i<npkt;i++){
@@ -45,6 +44,7 @@ int main() {
   if(fmod((length+1),2) != 0.0){
       wpkt[i%NMAX].lastbyte = 255;
  } 
+   word=(unsigned short *)malloc(MAXWORD*sizeof(unsigned short));
    if (debug) printf("%d+%d+%d+%d\n",wpkt[i%NMAX].ver<<13,wpkt[i%NMAX].type<<12,wpkt[i%NMAX].shf<<11,wpkt[i%NMAX].apid);
    word[0]=(wpkt[i%NMAX].ver<<13)+(wpkt[i%NMAX].type<<12)+(wpkt[i%NMAX].shf<<11)+wpkt[i%NMAX].apid;
    if (debug) printf("%d+%d\n",wpkt[i%NMAX].sf<<14,wpkt[i%NMAX].ssc);
@@ -85,8 +85,8 @@ int main() {
        }
        if (debug) printf("\n");
       free(wpkt[i%NMAX].data);
+      free(word);
 }   
-	free(word);
 
    // Close the file after writing
    fclose(wf);
