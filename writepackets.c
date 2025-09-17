@@ -4,7 +4,7 @@
 #include<math.h>
 #include "packets.h"
 int main() {
-   unsigned short int word[32763];
+   unsigned short int *word;
    unsigned long long int i,j,npkt;
    unsigned short int length;// length in bytes-1
    char fname[32];
@@ -27,7 +27,7 @@ int main() {
        printf("Cannot open file!\n");
        return 1;
    }
-
+   word=(unsigned short *)malloc(MAXWORD*sizeof(unsigned short));
    // Initialize packet data
    struct Packet wpkt[NMAX];
  for(i=0;i<npkt;i++){
@@ -38,21 +38,13 @@ int main() {
    wpkt[i%NMAX].sf = 2;
    wpkt[i%NMAX].ssc = 100+i;
    wpkt[i%NMAX].len = length;
+   wpkt[i%NMAX].data=(unsigned short*)malloc(((length+1)/2)*sizeof(unsigned short));
    for(j=0;j<(length+1)/2;j++){
    wpkt[i%NMAX].data[j] = 65535-j;
   }
   if(fmod((length+1),2) != 0.0){
       wpkt[i%NMAX].lastbyte = 255;
  } 
-// 57344
-// 4096
-// 2048
-// 2047
-//
-// 49152
-// 16383
-
-   for (i = 0; i < npkt; i++){
    if (debug) printf("%d+%d+%d+%d\n",wpkt[i%NMAX].ver<<13,wpkt[i%NMAX].type<<12,wpkt[i%NMAX].shf<<11,wpkt[i%NMAX].apid);
    word[0]=(wpkt[i%NMAX].ver<<13)+(wpkt[i%NMAX].type<<12)+(wpkt[i%NMAX].shf<<11)+wpkt[i%NMAX].apid;
    if (debug) printf("%d+%d\n",wpkt[i%NMAX].sf<<14,wpkt[i%NMAX].ssc);
@@ -73,6 +65,7 @@ int main() {
       fwrite(&mybyte, 1, 1, wf);
  } 
 
+   // Display packets details
 	   if(debug) printf("Packets Details:\n");
 	   if(debug) printf("packet n.%lld\n",i);
        if(debug) printf("version n.: %d\n", wpkt[i%NMAX].ver);
@@ -88,19 +81,16 @@ int main() {
 		  }
        }
        if (fmod((length+7),2) != 0.0){
-		if(debug) printf("d%lld: %d\n",j, wpkt[i%NMAX].lastbyte);
+		if(debug) printf("lb: %hhu\n", wpkt[i%NMAX].lastbyte);
        }
        if (debug) printf("\n");
-
-}
+      free(wpkt[i%NMAX].data);
+}   
+	free(word);
 
    // Close the file after writing
    fclose(wf);
 
-
-   // Display packets details
-
-
    return 0;
-}
+
 }
