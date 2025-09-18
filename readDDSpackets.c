@@ -10,6 +10,7 @@ int main() {
     unsigned int w1,w2;
     size_t res;
     char fname[1024];
+    char ut[32]; /* UTC time string YYYY-MM-DDThh:mm:ss*/
     unsigned char mybyte;
     puts("insert the filename to read");
     scanf("%s",fname);
@@ -160,7 +161,7 @@ while (npkt<ULONG_MAX){
 	   }
    if(!res) break;
        printf("%lld sec_msw: %hu\n",npkt, dhd[npkt%NMAX].sec_msw); // SCET seconds MSW
-       printf("%lld sec_lsw: %hu\n",npkt, dhd[npkt%NMAX].sec_msw); // SCET seconds LSW
+       printf("%lld sec_lsw: %hu\n",npkt, dhd[npkt%NMAX].sec_lsw); // SCET seconds LSW
        printf("%lld usec_msw: %hu\n",npkt, dhd[npkt%NMAX].usec_msw); // SCET microseconds MSW 
        printf("%lld usec_lsw: %hu\n",npkt, dhd[npkt%NMAX].usec_lsw); // SCET microseconds LSW
        printf("%lld time: %f\n",npkt, dhd[npkt%NMAX].time); // SCET
@@ -189,8 +190,10 @@ while (npkt<ULONG_MAX){
 	   printf("%lld sec_lsw: %hu\n",npkt,rpkt[npkt%NMAX].dfh.sec_lsw);
        printf("%lld subsec: %hu\n",npkt,rpkt[npkt%NMAX].dfh.subsec);
        printf("%lld dfh.time: %f\n",npkt,rpkt[npkt%NMAX].dfh.time);
+       getBC_UTC(ut,rpkt[npkt%NMAX].dfh.time);
+       printf("%lld UTC: %s\n",npkt,ut);
    for (j=8; j<3+(rpkt[npkt%NMAX].len+1)/2;j++){
-           printf("%lld d%lld: %hu\n",npkt, j-8,rpkt[npkt%NMAX].data[(j-8)%MAXDATA]); // j data word
+           printf("%lld d%lld: %4X\n",npkt, j-8,rpkt[npkt%NMAX].data[(j-8)%MAXDATA]); // j data word
       }
  // end all the 16 bit words
    if(fmod((rpkt[npkt%NMAX].len+1),2) != 0){

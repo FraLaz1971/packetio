@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+int debug = 0;
 int main(int argc, char **argv)
 {
   int i,cnt;
@@ -16,6 +16,10 @@ int main(int argc, char **argv)
   FILE *wf;
   char *fname = argv[1];
   char *ofname = argv[3];
+  if(argc < 4){
+    fprintf(stderr,"usage: %s <infile> <nbytes> <outfile>\n", argv[0]);
+    return 1;
+  }
    // Open the binary file for reading
   rf = fopen(fname, "rb");
   wf = fopen(ofname, "wb");
@@ -38,7 +42,7 @@ int main(int argc, char **argv)
           res = fread(&b,1,1,rf);
           if(res){
           prefix[i]=b;
-	  fprintf(stderr,"byte %d = %d\n",i,prefix[i]);
+	  if (debug) fprintf(stderr,"byte %d = %d\n",i,prefix[i]);
          }
      	}
           w1=(prefix[8]<<8)+prefix[9];
@@ -49,9 +53,9 @@ int main(int argc, char **argv)
           res = fread(&b,1,1,rf);
           packet[i]=b;
 	  fwrite(&packet[i], 1,1,wf);
-	  fprintf(stderr,"byte %d = %d\n",i,packet[i]);
+	  if (debug) fprintf(stderr,"byte %d = %d\n",i,packet[i]);
         }
-	  fprintf(stderr, "len %i %8.8X\n", len, len);
+	  if (debug) fprintf(stderr, "len %i %8.8X\n", len, len);
       }
 	cnt++;
     } while (res > 0);
