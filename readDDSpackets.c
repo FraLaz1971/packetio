@@ -99,6 +99,10 @@ while (npkt<ULONG_MAX){
           if(debug) printf("shf: %hu\n",rpkt[npkt%NMAX].shf);          
           rpkt[npkt%NMAX].apid = word[j]&2047;
           if(debug) printf("apid: %hu\n",rpkt[npkt%NMAX].apid);
+	  rpkt[npkt%NMAX].pid = (word[j]&2032)>>4;
+          if(debug) printf("pid: %hu\n",rpkt[npkt%NMAX].pid);
+          rpkt[npkt%NMAX].cat = word[j]&15;
+          if(debug) printf("cat: %hu\n",rpkt[npkt%NMAX].cat);
        break;
        case 1:
               rpkt[npkt%NMAX].sf =  word[j]>>14;
@@ -174,6 +178,8 @@ while (npkt<ULONG_MAX){
        printf("%lld type: %hu\n",npkt, rpkt[npkt%NMAX].type); // packet type 0,1
        printf("%lld shf:  %hu\n",npkt, rpkt[npkt%NMAX].shf);  //secondary header flag
        printf("%lld apid: %hu\n",npkt, rpkt[npkt%NMAX].apid); // application ID
+       printf("%lld pid: %hu\n",npkt, rpkt[npkt%NMAX].pid); // process ID
+       printf("%lld cat: %hu\n",npkt, rpkt[npkt%NMAX].cat); // category
  // end 1st 16 bits word
        printf("%lld sf: %hu\n",npkt, rpkt[npkt%NMAX].sf); // sequence flag
        printf("%lld ssc: %hu\n",npkt, rpkt[npkt%NMAX].ssc); // source sequence counter

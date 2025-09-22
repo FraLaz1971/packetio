@@ -5,7 +5,7 @@ int main(int argc, char **argv)
 {
   int i,cnt;
   unsigned char prefix[18];
-  unsigned char packet[4096];
+  unsigned char packet[65542];
   unsigned char b;
   int prefix_length;
   int ccsds_length;
