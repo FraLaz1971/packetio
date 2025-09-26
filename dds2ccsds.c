@@ -15,9 +15,9 @@ int main(int argc, char **argv)
   FILE *rf;
   FILE *wf;
   char *fname = argv[1];
-  char *ofname = argv[3];
-  if(argc < 4){
-    fprintf(stderr,"usage: %s <infile> <nbytes> <outfile>\n", argv[0]);
+  char *ofname = argv[2];
+  if(argc < 3){
+    fprintf(stderr,"usage: %s <infile> <outfile>\n", argv[0]);
     return 1;
   }
    // Open the binary file for reading
@@ -34,7 +34,7 @@ int main(int argc, char **argv)
        return 1;
    }
 
-  prefix_length=atoi(argv[2]);
+  prefix_length=18;
   cnt=0;
   if (rf > 0) {
     do {
