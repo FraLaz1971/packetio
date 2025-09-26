@@ -4,7 +4,7 @@ int debug = 0;
 int main(int argc, char **argv)
 {
   int i,cnt;
-  unsigned char prefix[18];
+  unsigned char prefix[256];
   unsigned char packet[65542];
   unsigned char b;
   int prefix_length;
@@ -45,13 +45,17 @@ int main(int argc, char **argv)
 	  if (debug) fprintf(stderr,"byte %d = %d\n",i,prefix[i]);
          }
      	}
-          w1=(prefix[8]<<8)+prefix[9];
-          w2=(prefix[10]<<8)+prefix[11];
-          len=(w1<<16)+w2;
       if (res) {
-        for(i=0;i<len;i++){
+	len=56535;
+        for(i=0;i<len+7;i++){
           res = fread(&b,1,1,rf);
           packet[i]=b;
+	  if(i==5){
+            len=(packet[4]<<8)+packet[5];
+	  debug=1;
+	  if (debug) fprintf(stderr,"len[%hu] = %hu\n",cnt,len);
+	  debug=0;
+	  }
 	  fwrite(&packet[i], 1,1,wf);
 	  if (debug) fprintf(stderr,"byte %d = %d\n",i,packet[i]);
         }
@@ -62,6 +66,6 @@ int main(int argc, char **argv)
   }
   fclose(rf);
   fclose(wf);
-  fprintf(stderr,"processed %d packets\n",cnt-1);
+  fprintf(stderr,"processed %d packets\n",cnt);
   return 0;
 }
