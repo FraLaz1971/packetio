@@ -7,38 +7,42 @@ LIBS=-lm
 .PHONY: all clean packets
 all: writepackets readpackets writeDDSpackets readDDSpackets strip_prefix
 
+packets.o: packets.c packets.h
+	$(CC) $(CFLAGS) $<
+
 readpackets.o: readpackets.c packets.h
 	$(CC) $(CFLAGS) $<
 
-readpackets: readpackets.o
-	$(LD) $< -o $@ $(LDFLAGS) $(LIBS)
+readpackets: readpackets.o packets.o
+	$(LD) $^ -o $@ $(LDFLAGS) $(LIBS)
 
 writepackets.o: writepackets.c packets.h
 	$(CC) $(CFLAGS) $<
 
-writepackets: writepackets.o
-	$(LD) $< -o $@ $(LDFLAGS) $(LIBS)
+writepackets: writepackets.o packets.o
+	$(LD) $^ -o $@ $(LDFLAGS) $(LIBS)
+
 readDDSpackets.o: readDDSpackets.c packets.h
 	$(CC) $(CFLAGS) $<
 
-readDDSpackets: readDDSpackets.o
-	$(LD) $< -o $@ $(LDFLAGS) $(LIBS)
+readDDSpackets: readDDSpackets.o packets.o
+	$(LD) $^ -o $@ $(LDFLAGS) $(LIBS)
 
 writeDDSpackets.o: writeDDSpackets.c packets.h
 	$(CC) $(CFLAGS) $<
 
-writeDDSpackets: writeDDSpackets.o
-	$(LD) $< -o $@ $(LDFLAGS) $(LIBS)
+writeDDSpackets: writeDDSpackets.o packets.o
+	$(LD) $^ -o $@ $(LDFLAGS) $(LIBS)
 
 strip_prefix.o: strip_prefix.c packets.h
 	$(CC) $(CFLAGS) $<
 
-strip_prefix: strip_prefix.o
-	$(LD) $< -o $@
+strip_prefix: strip_prefix.o packets.o
+	$(LD) $^ -o $@
 
 packets: packets.ccsds
 
 packets.ccsds:
 	./writepackets <<< "3"
 clean:
-	$(RM) *.o writepackets readpackets readDDSpackets writeDDSpackets packets.ccsds *.log
+	$(RM) *.o writepackets readpackets readDDSpackets writeDDSpackets strip_prefix packets.ccsds *.log
