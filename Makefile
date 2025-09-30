@@ -5,7 +5,7 @@ CFLAGS=-c
 LDFLAGS=
 LIBS=-lm
 .PHONY: all clean packets
-all: writepackets readpackets writeDDSpackets readDDSpackets strip_prefix
+all: writepackets readpackets writeDDSpackets readDDSpackets strip_prefix countpackets
 
 packets.o: packets.c packets.h
 	$(CC) $(CFLAGS) $<
@@ -40,9 +40,15 @@ strip_prefix.o: strip_prefix.c packets.h
 strip_prefix: strip_prefix.o packets.o
 	$(LD) $^ -o $@
 
+countpackets.o: countpackets.c packets.h
+	$(CC) $(CFLAGS) $<
+
+countpackets: countpackets.o packets.o
+	$(LD) $^ -o $@
+
 packets: packets.ccsds
 
 packets.ccsds:
 	./writepackets <<< "3"
 clean:
-	$(RM) *.o writepackets readpackets readDDSpackets writeDDSpackets strip_prefix packets.ccsds *.log
+	$(RM) *.o writepackets readpackets readDDSpackets writeDDSpackets strip_prefix countpackets packets.ccsds *.log
