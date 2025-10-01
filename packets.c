@@ -19,17 +19,8 @@
  * MA 02110-1301, USA.
  * 
  * 
- */
-#include <limits.h>
-#include <time.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h> 
+*/
 #include "packets.h"
-#define NMAX 512
-#define MAXDATA 32768
-#define MAXWORD 32771
-#define TIMEOFFS 935280002.649755
 
 
 int swapword(unsigned short int *w){
@@ -98,4 +89,100 @@ void getBC_UTC(char *bcstrt, double ts){
   sday,shour,smin,ssec);
   if (debug) printf("getBC_UTC():BC Tm str: %s\n",bcstrt);
 	return;
+}
+
+int countpackets(char *fname){
+  FILE *ifp;
+  unsigned short int w,len;
+  unsigned char b;
+  unsigned long long cnt;
+  int i,res=1;
+  ifp=fopen(fname,"rb");
+  if(!ifp){
+    fprintf(stderr,"error in opening file %s\n",fname);
+    return 1;
+  }
+
+  /* loop on all the packets */
+  cnt=0;
+  while(res){
+    res=fread(&w,2,1,ifp);
+    if(!res) break;
+    res=fread(&w,2,1,ifp);
+    if(!res) break;
+    res=fread(&len,2,1,ifp);
+    if(!res) break;
+    swapword(&len);
+    for(i=0;i<len+1;i++){
+      res=fread(&b,1,1,ifp);
+      if(!res) break;
+    }
+    cnt++;
+  }
+  if(debug) printf("read %lld packets\n",cnt);
+  fclose(ifp);
+  return cnt;
+}
+
+int copypacket(struct Packet *dest, struct Packet *src ){
+    if (debug) printf("copypacket() start");
+    unsigned long int i;
+// first 16 bits
+    dest->ver = src->ver;
+    dest->type = src->type;
+    dest->shf = src->shf;
+    dest->apid = src->apid;
+//(
+    dest->pid = src->pid;
+    dest->cat = src->cat;
+//)
+// second 16 bits
+    dest->sf = src->sf;
+    dest->ssc = src->ssc;
+// third 16 bits
+    dest->len = src->len;// packet length (16bit)
+    // following bytes
+    if (debug) printf("copypacket() now coying data field bytes");
+    for(i=0; i<dest->len+1; i++){
+      dest->bv[i] = src->bv[i];
+    }
+    if (debug) printf("copypacket() end");
+  return 0;
+}
+
+int swappacket(struct Packet *p1, struct Packet *p2 ){
+  struct Packet temp;
+  temp.bv = (unsigned char *) malloc(65536*sizeof(unsigned char));
+  if (debug) printf("swappacket() start");
+  int res;
+  if (debug) printf("swappacket() going to exec copypacket(&temp, p2)");
+  res = copypacket(&temp, p2);
+  if (debug) printf("swappacket() going to exec copypacket(p2,p1)");
+  res = copypacket(p2,p1);
+  if (debug) printf("swappacket() going to exec copypacket(p1,&temp)");
+  res = copypacket(p1,&temp);
+  if (debug) printf("swappacket() end");
+  free(temp.bv);
+  return 0;
+}
+
+int sortpackets(struct Packet *pv, unsigned long dim){
+ unsigned long long cnt,i,j;
+ return 0;
+}
+void showpacket(struct Packet *p){
+  unsigned long int i;
+  printf("ver: %u\n",p->ver);
+  printf("type: %u\n",p->type);
+  printf("shf: %u\n",p->shf);
+  printf("apid: %hu\n",p->apid);
+  printf("pid: %u\n",p->pid);
+  printf("cat: %u\n",p->cat);
+  printf("sf: %u\n",p->sf);
+  printf("ssc: %u\n",p->ssc);
+  printf("len: %hu\n",p->len);
+  for(i=0; i<p->len+1; i++){
+    printf("bv[%lu]: %u\n",i,p->bv[i]);
+}
+ return ;
 }

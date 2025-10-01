@@ -1,3 +1,5 @@
+#ifndef PACKETS_H
+#define PACKETS_H
 /*
  * packets.h
  * 
@@ -20,11 +22,18 @@
  * 
  * 
  */
+#include <stdio.h>
+#include <limits.h>
+#include <time.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
 #define NMAX 512
 #define MAXDATA 32768
 #define MAXWORD 32771
 #define TIMEOFFS 935280002.649755
-static int debug=0;
+static int debug=1;
 
 struct BC_DFH{
 	unsigned char spare0; /* 1 bit 0b0 */
@@ -73,7 +82,10 @@ struct Packet {
 // last byte
 	unsigned char lastbyte;// last byte of the datafield if composed by
 						  // an odd number of bytes
+	unsigned char *bv;
 };
+
+static  struct Packet temp;
 
 int swapword(unsigned short int *w);
 
@@ -81,3 +93,15 @@ void leftpad(char *s,char c);
 
 // yyyy-MM-ddThh:mm:ss
 void getBC_UTC(char *bcstrt, double ts);
+
+int countpackets(char *fname);
+
+int copypacket(struct Packet *dest, struct Packet *src );
+
+int swappacket(struct Packet *p1, struct Packet *p2 );
+
+int sortpackets(struct Packet *pv, unsigned long dim);
+
+void showpacket(struct Packet *p);
+
+#endif //PACKETS_H
