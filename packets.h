@@ -35,6 +35,31 @@
 #define TIMEOFFS 935280002.649755
 static int debug=0;
 
+struct AGL_DFH{
+	unsigned int syncmarkMSW; /* 16 bits 0xFFDB */
+	unsigned int syncmarkLSW; /* 16 bits 0x9255 */
+	unsigned char CRCflag;/* 2 bits 3 */
+	unsigned char type; /* 6 bits service type [32,63] */
+	unsigned char subtype; /* 8 bit service subtype [0,255] */
+	unsigned int MMpageID; /* 16 bits mass storage page identifier */
+	unsigned int MMpktcnt; /* 16 bits mass storage packet counter */
+	unsigned char century; /* 8 bits current century 0x20  */
+	unsigned char APIDseqcnt; /* 8 bits APID sequence counter  */
+	unsigned char OBTsb0; /* 8 bits OBT s byte 0 */
+	unsigned char OBTsb1; /* 8 bits OBT s byte 1 */
+	unsigned char OBTsb2; /* 8 bits OBT s byte 2 */
+	unsigned char OBTsb3; /* 8 bits OBT s byte 3 */
+	unsigned char OBTsb4; /* 8 bits OBT s byte 4 */
+	unsigned char OBTusbn; /* 4 bits OBT us  2^19-2^16 */
+	unsigned char OBTusb1; /* 8 bits OBT us  2^15-2^8 */
+	unsigned char OBTusb2; /* 8 bits OBT us 2^7-2^0  */
+	unsigned char mode; /* 8 bits  P/L operational mode in which the Source Packet was generated */
+	unsigned char PktStructID; /* 4 bits Packet Structure ID. val=1 for the first version */
+	unsigned char RedundID; /* 4 bits Redundancy ID value=1 */
+	double OBTtime; /* OBT time reconstructed from all the fields elapsed time since 00:00:00, January 6, 1980 */
+};
+
+
 struct BC_DFH{
 	unsigned char spare0; /* 1 bit 0b0 */
 	unsigned char pus_ver; /* 3 bit PUS Versioni 0b001  */
@@ -77,12 +102,14 @@ struct Packet {
 // third 16 bits
     unsigned short int len;// packet length (16bit)
     struct BC_DFH dfh;
+    struct AGL_DFH adfh;
 // following words
     unsigned short int  *data;// data field filled with n*16bit
 // last byte
 	unsigned char lastbyte;// last byte of the datafield if composed by
 						  // an odd number of bytes
 	unsigned char *bv;
+	unsigned int CRC; /* Packet Error Control (16 bits): CRC checksum */
 };
 
 int swapword(unsigned short int *w);
