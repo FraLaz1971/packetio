@@ -33,7 +33,7 @@
 #define MAXDATA 32768
 #define MAXWORD 32771
 #define TIMEOFFS 935280002.649755
-static int debug=1;
+static int debug=0;
 
 struct BC_DFH{
 	unsigned char spare0; /* 1 bit 0b0 */
@@ -84,8 +84,6 @@ struct Packet {
 						  // an odd number of bytes
 	unsigned char *bv;
 };
-
-static  struct Packet temp;
 
 int swapword(unsigned short int *w);
 

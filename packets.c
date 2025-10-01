@@ -153,15 +153,15 @@ int copypacket(struct Packet *dest, struct Packet *src ){
 int swappacket(struct Packet *p1, struct Packet *p2 ){
   struct Packet temp;
   temp.bv = (unsigned char *) malloc(65536*sizeof(unsigned char));
-  if (debug) printf("swappacket() start");
+  if (debug) printf("swappacket() start\n");
   int res;
-  if (debug) printf("swappacket() going to exec copypacket(&temp, p2)");
+  if (debug) printf("swappacket() going to exec copypacket(&temp, p2)\n");
   res = copypacket(&temp, p2);
-  if (debug) printf("swappacket() going to exec copypacket(p2,p1)");
+  if (debug) printf("swappacket() going to exec copypacket(p2,p1)\n");
   res = copypacket(p2,p1);
-  if (debug) printf("swappacket() going to exec copypacket(p1,&temp)");
+  if (debug) printf("swappacket() going to exec copypacket(p1,&temp)\n");
   res = copypacket(p1,&temp);
-  if (debug) printf("swappacket() end");
+  if (debug) printf("swappacket() end\n");
   free(temp.bv);
   return 0;
 }
