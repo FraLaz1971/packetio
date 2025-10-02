@@ -7,6 +7,7 @@ int main() {
     unsigned short int *word;
     unsigned long long int j,npkt;
     size_t res;
+    char sword[6];
     char fname[1024];
     unsigned char mybyte;
     puts("insert the filename to read");
@@ -92,7 +93,9 @@ while (npkt<ULONG_MAX){
        printf("%lld len: %hu\n",npkt, rpkt[npkt%NMAX].len); // packet length (bytes-1 more)
  // end 3rd 16 bits word
    for (j=3; j<3+(rpkt[npkt%NMAX].len+1)/2;j++){
-           printf("%lld d%lld: %4X\n",npkt, j-3,rpkt[npkt%NMAX].data[(j-3)%MAXDATA]); // j data word
+           snprintf(sword,5,"%4X",rpkt[npkt%NMAX].data[(j-3)%MAXDATA]); // j data word
+           leftpad(sword,'0');
+           printf("%lld d%lld: %s\n",npkt, j-3,sword); // j data word
       }
  // end all the 16 bit words
    if(fmod((rpkt[npkt%NMAX].len+1),2) != 0){
