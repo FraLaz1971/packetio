@@ -47,7 +47,7 @@ int main() {
    wpkt[i%NMAX].adfh.MMpktcnt = 255;
    wpkt[i%NMAX].adfh.century = 32;
    wpkt[i%NMAX].adfh.APIDseqcnt = 50+i;
-   wpkt[i%NMAX].adfh.OBTsb0 = 0;
+   wpkt[i%NMAX].adfh.OBTsb0 = 8;
    wpkt[i%NMAX].adfh.OBTsb1 = 0;
    wpkt[i%NMAX].adfh.OBTsb2 = 0;
    wpkt[i%NMAX].adfh.OBTsb3 = 0;

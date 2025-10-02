@@ -36,27 +36,29 @@
 static int debug=0;
 
 struct AGL_DFH{
-	unsigned int syncmarkMSW; /* 16 bits 0xFFDB */
-	unsigned int syncmarkLSW; /* 16 bits 0x9255 */
-	unsigned char CRCflag;/* 2 bits 3 */
-	unsigned char type; /* 6 bits service type [32,63] */
-	unsigned char subtype; /* 8 bit service subtype [0,255] */
-	unsigned int MMpageID; /* 16 bits mass storage page identifier */
-	unsigned int MMpktcnt; /* 16 bits mass storage packet counter */
-	unsigned char century; /* 8 bits current century 0x20  */
-	unsigned char APIDseqcnt; /* 8 bits APID sequence counter  */
-	unsigned char OBTsb0; /* 8 bits OBT s byte 0 */
-	unsigned char OBTsb1; /* 8 bits OBT s byte 1 */
-	unsigned char OBTsb2; /* 8 bits OBT s byte 2 */
-	unsigned char OBTsb3; /* 8 bits OBT s byte 3 */
-	unsigned char OBTsb4; /* 8 bits OBT s byte 4 */
-	unsigned char OBTusbn; /* 4 bits OBT us  2^19-2^16 */
-	unsigned char OBTusb1; /* 8 bits OBT us  2^15-2^8 */
-	unsigned char OBTusb2; /* 8 bits OBT us 2^7-2^0  */
-	unsigned char mode; /* 8 bits  P/L operational mode in which the Source Packet was generated */
-	unsigned char PktStructID; /* 4 bits Packet Structure ID. val=1 for the first version */
-	unsigned char RedundID; /* 4 bits Redundancy ID value=1 */
-	double OBTtime; /* OBT time reconstructed from all the fields elapsed time since 00:00:00, January 6, 1980 */
+	unsigned int syncmarkMSW; /* 16 bits 0xFFDB f0 */
+	unsigned int syncmarkLSW; /* 16 bits 0x9255 f1 */
+	unsigned char CRCflag;/* 2 bits 3 f2 */
+	unsigned char type; /* 6 bits service type [32,63] f3 */
+	unsigned char subtype; /* 8 bit service subtype [0,255] f4 */
+	unsigned int MMpageID; /* 16 bits mass storage page identifier f5 */
+	unsigned int MMpktcnt; /* 16 bits mass storage packet counter f6 */
+	unsigned char century; /* 8 bits current century 0x20  f7 */
+	unsigned char APIDseqcnt; /* 8 bits APID sequence counter  f8 */
+	unsigned long long OBTsb0; /* 8 bits OBT s byte 0 f9 */
+	unsigned long OBTsb1; /* 8 bits OBT s byte 1 f10 */
+	unsigned int OBTsb2; /* 8 bits OBT s byte 2 f11 */
+	unsigned short OBTsb3; /* 8 bits OBT s byte 3 f12 */
+	unsigned char OBTsb4; /* 8 bits OBT s byte 4 f13 */
+	unsigned char OBTusbn; /* 4 bits OBT us  2^19-2^16 f14 */
+	unsigned char OBTusb1; /* 8 bits OBT us  2^15-2^8 f15 */
+	unsigned char OBTusb2; /* 8 bits OBT us 2^7-2^0  f16 */
+	unsigned long long OBTsecs; /* OBT seconds 40 bits */
+	unsigned int OBTusecs; /* OBT microseconds 20 bits */
+	unsigned char mode; /* 8 bits  P/L operational mode in which the Source Packet was generated f17 */
+	unsigned char PktStructID; /* 4 bits Packet Structure ID. val=1 for the first version f18 */
+	unsigned char RedundID; /* 4 bits Redundancy ID value=1 f19 */
+	double OBTtime; /* OBT time reconstructed from all the fields elapsed time since 00:00:00, January 6, 1980  */
 };
 
 

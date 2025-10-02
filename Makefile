@@ -6,7 +6,8 @@ LDFLAGS=
 LIBS=-lm
 .PHONY: all clean packets
 all: writepackets readpackets writeDDSpackets readDDSpackets strip_prefix \
-     countpackets testcopypkt sortpackets swappacket writeagilepackets
+     countpackets testcopypkt sortpackets swappacket writeagilepackets \
+     readagilepackets
 
 packets.o: packets.c packets.h
 	$(CC) $(CFLAGS) $<
@@ -27,6 +28,12 @@ writeagilepackets.o: writeagilepackets.c packets.h
 	$(CC) $(CFLAGS) $<
 
 writeagilepackets: writeagilepackets.o packets.o
+	$(LD) $^ -o $@ $(LDFLAGS) $(LIBS)
+
+readagilepackets.o: readagilepackets.c packets.h
+	$(CC) $(CFLAGS) $<
+
+readagilepackets: readagilepackets.o packets.o
 	$(LD) $^ -o $@ $(LDFLAGS) $(LIBS)
 
 readDDSpackets.o: readDDSpackets.c packets.h
