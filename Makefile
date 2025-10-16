@@ -7,7 +7,7 @@ LIBS=-lm
 .PHONY: all clean packets
 all: writepackets readpackets writeDDSpackets readDDSpackets strip_prefix \
      countpackets testcopypkt sortpackets swappacket writeagilepackets \
-     readagilepackets
+     readagilepackets countDDSpackets dds2ccsds
 
 packets.o: packets.c packets.h
 	$(CC) $(CFLAGS) $<
@@ -78,9 +78,22 @@ sortpackets.o: sortpackets.c packets.h
 sortpackets: sortpackets.o packets.o
 	$(LD) $^ -o $@ $(LDFLAGS) $(LIBS)
 
+countDDSpackets.o: countDDSpackets.c packets.h
+	$(CC) $(CFLAGS) $<
+
+countDDSpackets: countDDSpackets.o packets.o
+	$(LD) $^ -o $@ $(LDFLAGS) $(LIBS)
+
+dds2ccsds.o: dds2ccsds.c packets.h
+	$(CC) $(CFLAGS) $<
+
+dds2ccsds: dds2ccsds.o packets.o
+	$(LD) $^ -o $@ $(LDFLAGS) $(LIBS)
+
 packets: packets.ccsds
 
 packets.ccsds:
 	./writepackets <<< "3"
 clean:
-	$(RM) *.o writepackets readpackets readDDSpackets writeDDSpackets strip_prefix countpackets testcopypkt sortpackets swappacket packets.ccsds *.log
+	$(RM) *.o writepackets readpackets readDDSpackets writeDDSpackets strip_prefix countpackets \
+	testcopypkt sortpackets swappacket countDDSpackets  packets.ccsds dds2ccsds
