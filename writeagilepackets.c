@@ -82,7 +82,7 @@ int main() {
          wpkt[i%NMAX].data[j]=(wpkt[i%NMAX].adfh.century<<8)+wpkt[i%NMAX].adfh.APIDseqcnt;
        break;
        case 6:
-         wpkt[i%NMAX].data[j]=(wpkt[i%NMAX].adfh.OBTsb0<<8+wpkt[i%NMAX].adfh.OBTsb1);
+         wpkt[i%NMAX].data[j]=(wpkt[i%NMAX].adfh.OBTsb0<<8)+wpkt[i%NMAX].adfh.OBTsb1;
        break;
        case 7:
          wpkt[i%NMAX].data[j]=(wpkt[i%NMAX].adfh.OBTsb2<<8)+wpkt[i%NMAX].adfh.OBTsb3;
