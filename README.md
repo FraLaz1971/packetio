@@ -21,7 +21,9 @@ To compile on MS windows using MSVC from the cmd command prompt
 ###
 `nmake /f makefile.vc`
 ###
-To run on MS windows
+Or is possible to open the program in codeblocks IDE
+###
+To run on MS windows on CMD command prompt
 ###
 `writepackets`
 ###
@@ -29,4 +31,9 @@ and follow the instructions, the same for
 ###
 `readpackets`
 ###
-and so on for all the programs.
+and so on for all the programs. On MS Windows it's possible to open a menu to select the program to run
+digiting
+###
+`menu`
+###
+from the command line cmd or on codeblocks from the tools item called menu.
