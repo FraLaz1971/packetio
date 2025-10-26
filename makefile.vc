@@ -1,13 +1,10 @@
-# Sample makefile
-
-!include <win32.mak>
+cc=cl
+link=link
 OEXE=.obj
 EEXE=.exe
 RM=del /q /f
 all: countDDSpackets$(EEXE) countpackets$(EEXE) dds2ccsds$(EEXE) readagilepackets$(EEXE) readDDSpackets$(EEXE) readpackets$(EEXE) writeagilepackets$(EEXE) writeDDSpackets$(EEXE) writepackets$(EEXE)
 
-# .c$(OEXE):
-# 	$(cc) $(cdebug) $(cflags) $(cvars) $*.c
 TARGET0=packets
 TARGET1=writepackets
 TARGET2=readpackets
