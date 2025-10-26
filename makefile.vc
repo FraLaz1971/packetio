@@ -1,0 +1,62 @@
+# Sample makefile
+
+!include <win32.mak>
+OEXE=.obj
+EEXE=.exe
+RM=del /q /f
+all: countDDSpackets$(EEXE) countpackets$(EEXE) dds2ccsds$(EEXE) readagilepackets$(EEXE) readDDSpackets$(EEXE) readpackets$(EEXE) writeagilepackets$(EEXE) writeDDSpackets$(EEXE) writepackets$(EEXE)
+
+# .c$(OEXE):
+# 	$(cc) $(cdebug) $(cflags) $(cvars) $*.c
+TARGET0=packets
+TARGET1=writepackets
+TARGET2=readpackets
+TARGET3=writeDDSpackets
+TARGET4=readDDSpackets
+TARGET5=dds2ccsds
+TARGET6=countpackets
+TARGET7=writeagilepackets
+TARGET8=readagilepackets
+TARGET9=countDDSpackets
+#object files
+$(TARGET0)$(OEXE): $(TARGET0).c $(TARGET0).h
+	$(cc) /c $(TARGET0).c
+$(TARGET1)$(OEXE): $(TARGET1).c $(TARGET0).h
+	$(cc) /c $(TARGET1).c
+$(TARGET2)$(OEXE): $(TARGET2).c $(TARGET0).h
+	$(cc) /c $(TARGET2).c
+$(TARGET3)$(OEXE): $(TARGET3).c $(TARGET0).h
+	$(cc) /c $(TARGET3).c
+$(TARGET4)$(OEXE): $(TARGET4).c $(TARGET0).h
+	$(cc) /c $(TARGET4).c
+$(TARGET5)$(OEXE): $(TARGET5).c $(TARGET0).h
+	$(cc) /c $(TARGET5).c
+$(TARGET6)$(OEXE): $(TARGET6).c $(TARGET0).h
+	$(cc) /c $(TARGET6).c
+$(TARGET7)$(OEXE): $(TARGET7).c $(TARGET0).h
+	$(cc) /c $(TARGET7).c
+$(TARGET8)$(OEXE): $(TARGET8).c $(TARGET0).h
+	$(cc) /c $(TARGET8).c
+$(TARGET9)$(OEXE): $(TARGET9).c $(TARGET0).h
+	$(cc) /c $(TARGET9).c
+# executables
+$(TARGET1)$(EEXE): $(TARGET1)$(OEXE) $(TARGET0)$(OEXE)
+	$(link) /out:$(TARGET1)$(EEXE) $(TARGET1)$(OEXE) $(TARGET0)$(OEXE)
+$(TARGET2)$(EEXE): $(TARGET2)$(OEXE) $(TARGET0)$(OEXE)
+	$(link)  /out:$(TARGET2)$(EEXE) $(TARGET2)$(OEXE) $(TARGET0)$(OEXE)
+$(TARGET3)$(EEXE): $(TARGET3)$(OEXE) $(TARGET0)$(OEXE)
+	$(link)  /out:$(TARGET3)$(EEXE) $(TARGET3)$(OEXE) $(TARGET0)$(OEXE)
+$(TARGET4)$(EEXE): $(TARGET4)$(OEXE) $(TARGET0)$(OEXE)
+	$(link)  /out:$(TARGET4)$(EEXE) $(TARGET4)$(OEXE) $(TARGET0)$(OEXE)
+$(TARGET5)$(EEXE): $(TARGET5)$(OEXE) $(TARGET0)$(OEXE)
+	$(link)  /out:$(TARGET5)$(EEXE) $(TARGET5)$(OEXE) $(TARGET0)$(OEXE)
+$(TARGET6)$(EEXE): $(TARGET6)$(OEXE) $(TARGET0)$(OEXE)
+	$(link)  /out:$(TARGET6)$(EEXE) $(TARGET6)$(OEXE) $(TARGET0)$(OEXE)
+$(TARGET7)$(EEXE): $(TARGET7)$(OEXE) $(TARGET0)$(OEXE)
+	$(link)  /out:$(TARGET7)$(EEXE) $(TARGET7)$(OEXE) $(TARGET0)$(OEXE)
+$(TARGET8)$(EEXE): $(TARGET8)$(OEXE) $(TARGET0)$(OEXE)
+	$(link)  /out:$(TARGET8)$(EEXE) $(TARGET8)$(OEXE) $(TARGET0)$(OEXE)	
+$(TARGET9)$(EEXE): $(TARGET9)$(OEXE) $(TARGET0)$(OEXE)
+	$(link)  /out:$(TARGET9)$(EEXE) $(TARGET9)$(OEXE) $(TARGET0)$(OEXE)	
+clean:
+	$(RM) *.obj *.exe

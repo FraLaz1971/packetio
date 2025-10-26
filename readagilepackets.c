@@ -1,17 +1,19 @@
 #include "packets.h"
 int main() {
+    struct Packet rpkt[NMAX];
     unsigned short int *word;
     unsigned long long int j,npkt;
     size_t res;
     char sword[5];
     char fname[1024];
+    FILE *wf;
     unsigned char mybyte;
     puts("insert the filename to read");
     scanf("%s",fname);
     printf("going to read file %s\n",fname);
    // Open the binary file for reading
    word=(unsigned short*)malloc(MAXWORD*sizeof(unsigned short));
-   FILE *wf = fopen(fname, "rb");
+   wf = fopen(fname, "rb");
    if(debug) printf("open file for reading\n");
    
    // Check if file open successfully
@@ -21,7 +23,6 @@ int main() {
    }
 
    // Read packet data from the file
-   struct Packet rpkt[NMAX];
    npkt=0;
 while (npkt<ULONG_MAX){
 	if(debug) printf("reading packet n.%lld\n",npkt);

@@ -21,6 +21,12 @@
  * 
 */
 #include "packets.h"
+#if defined(_MSC_VER) && _MSC_VER < 1900
+double vc_round(double x)
+{
+    return (x<0) ? ceil(x - 0.5) : floor(x + 0.5);
+}
+#endif
 
 
 int swapword(unsigned short int *w){
@@ -57,18 +63,22 @@ void getBC_UTC(char *bcstrt, double ts){
 	double bctime=mytime+bcoffset;
 	time_t bctimet=(time_t)bctime;
 	time_t bt;
+    time_t t;
 	double mytimeud; /* input time microseconds */
 	unsigned int mytimeu;
+    struct tm* ptr;
 	mytimeud = (mytime-(double)mytimet)*1000000.0;
+#if defined(_MSC_VER) && _MSC_VER < 1900
+	mytimeu = (unsigned int)vc_round(mytimeud);
+#else
 	mytimeu = (unsigned int)round(mytimeud);
+#endif
 	if (debug) printf("read input time: %f\n",mytime);
 	if (debug) printf("input time seconds: %ld\n",mytimet);
 	if (debug) printf("input time microseconds (double): %f\n",mytimeud);
 	if (debug) printf("input time microseconds (uint): %u\n",mytimeu);
 	// Structure to store local time
-    struct tm* ptr;
     // Variable to store current time
-    time_t t;
     ptr = gmtime(&bctimet); 
     if (debug) printf("UTC: %s\n", asctime(ptr));    
   year=ptr->tm_year+1900;
@@ -78,13 +88,11 @@ void getBC_UTC(char *bcstrt, double ts){
   snprintf(shour,3,"%2d",ptr->tm_hour);
   snprintf(smin,3,"%2d",ptr->tm_min);
   snprintf(ssec,3,"%2d",ptr->tm_sec);
- 
   leftpad(smon,'0'); 
   leftpad(sday,'0');
   leftpad(shour,'0');
   leftpad(smin,'0');
-  leftpad(ssec,'0');
-  
+  leftpad(ssec,'0');  
   snprintf(bcstrt,32,"%d-%2s-%2s:%2s:%2s:%2s",year,smon,\
   sday,shour,smin,ssec);
   if (debug) printf("getBC_UTC():BC Tm str: %s\n",bcstrt);
@@ -125,8 +133,8 @@ int countpackets(char *fname){
 }
 
 int copypacket(struct Packet *dest, struct Packet *src ){
-    if (debug) printf("copypacket() start");
     unsigned long int i;
+    if (debug) printf("copypacket() start");
 // first 16 bits
     dest->ver = src->ver;
     dest->type = src->type;
@@ -152,9 +160,9 @@ int copypacket(struct Packet *dest, struct Packet *src ){
 
 int swappacket(struct Packet *p1, struct Packet *p2 ){
   struct Packet temp;
+  int res;
   temp.bv = (unsigned char *) malloc(65536*sizeof(unsigned char));
   if (debug) printf("swappacket() start\n");
-  int res;
   if (debug) printf("swappacket() going to exec copypacket(&temp, p2)\n");
   res = copypacket(&temp, p2);
   if (debug) printf("swappacket() going to exec copypacket(p2,p1)\n");

@@ -5,12 +5,13 @@ int main(int argc, char **argv){
   unsigned short int w,len;
   unsigned char b;
   unsigned long long cnt;
+  char *fname;
   int i,res=1;
   if(argc<2){
     printf("usage:%s <TMfile>\n",argv[0]);
     return 1;
   }
-  char *fname = argv[1];
+  fname = argv[1];
   ifp=fopen(fname,"rb");
   if(!ifp){
     fprintf(stderr,"error in opening file %s\n",fname);

@@ -4,11 +4,14 @@
 #include<math.h>
 #include "packets.h"
 int main() {
+   struct DDSheader dhd[NMAX];
+   struct Packet wpkt[NMAX];
    unsigned short int word[MAXWORD];
    unsigned short int hword[9];
    unsigned long long int i,j,k,npkt;
    unsigned short int length;// length in bytes-1
    char fname[1024];
+   FILE *wf;
    unsigned char mybyte;
    // decide the number of packets
    do{
@@ -21,7 +24,7 @@ int main() {
    puts("enter packet length-1");
    scanf("%hd",&length);
    // Open the binary file for writing
-   FILE *wf = fopen(fname, "wb");
+   wf = fopen(fname, "wb");
 
    // Check if file open successfully
    if (!wf) { 
@@ -31,8 +34,6 @@ int main() {
 
    // Initialize packet data
    
-   struct DDSheader dhd[NMAX];
-   struct Packet wpkt[NMAX];
  for(i=0;i<npkt;i++){ /* start loop on the packets to write*/
    /* fill the dds header */  
    dhd[i%NMAX].sec_msw = 0;

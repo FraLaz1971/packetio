@@ -16,3 +16,17 @@ To run on linux
 ###
 This will read the packets contained in the file `packets.ccsds`. At the end it gives
 the total number of packets read.
+###
+To compile on MS windows using MSVC from the cmd command prompt
+###
+`nmake /f makefile.vc`
+###
+To run on MS windows
+###
+`writepackets`
+###
+and follow the instructions, the same for
+###
+`readpackets`
+###
+and so on for all the programs.

@@ -9,13 +9,15 @@ int main() {
     size_t res;
     char sword[6];
     char fname[1024];
+    FILE *wf;
+    struct Packet rpkt[NMAX];
     unsigned char mybyte;
     puts("insert the filename to read");
     scanf("%s",fname);
     printf("going to read file %s\n",fname);
    // Open the binary file for reading
    word=(unsigned short*)malloc(MAXWORD*sizeof(unsigned short));
-   FILE *wf = fopen(fname, "rb");
+   wf = fopen(fname, "rb");
    if(debug) printf("open file for reading\n");
    
    // Check if file open successfully
@@ -25,7 +27,7 @@ int main() {
    }
 
    // Read packet data from the file
-   struct Packet rpkt[NMAX];
+   
    npkt=0;
 while (npkt<ULONG_MAX){
 	if(debug) printf("reading packet n.%lld\n",npkt);
@@ -64,7 +66,8 @@ while (npkt<ULONG_MAX){
               printf("illegal value of j: %lld\n",j);
         }
    }
-   rpkt[npkt%NMAX].data=(unsigned short*)malloc(MAXDATA*sizeof(unsigned short));
+/*   rpkt[npkt%NMAX].data=(unsigned short*)malloc(MAXDATA*sizeof(unsigned short)); */
+   rpkt[npkt%NMAX].data=(unsigned short*)malloc(((rpkt[npkt%NMAX].len+1)/2)*sizeof(unsigned short)); 
    if(debug) printf("max word: %hu\n",3+(rpkt[npkt%NMAX].len+1)/2);
    for (j=3; j<3+(rpkt[npkt%NMAX].len+1)/2;j++){
        res = fread(&word[j], 2, 1, wf);

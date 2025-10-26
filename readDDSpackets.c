@@ -4,11 +4,14 @@
 #include<math.h>
 #include "packets.h"
 int main() {
+    struct DDSheader dhd[NMAX];
+    struct Packet rpkt[NMAX];
 	unsigned short int *word;
 	unsigned short int hword[9];
     unsigned long long int j,k,npkt;
     unsigned int w1,w2;
     size_t res;
+    FILE *wf;
     char fname[1024];
     char ut[32]; /* UTC time string YYYY-MM-DDThh:mm:ss*/
     unsigned char mybyte;
@@ -16,7 +19,7 @@ int main() {
     scanf("%s",fname);
     printf("going to read file %s\n",fname);
    // Open the binary file for reading
-   FILE *wf = fopen(fname, "rb");
+    wf = fopen(fname, "rb");
    
    // Check if file open successfully
    if (!wf) { 
@@ -27,8 +30,6 @@ int main() {
    // Read packet data from the file
    word = (unsigned short int*)malloc(MAXWORD*sizeof(unsigned short int));
    
-   struct DDSheader dhd[NMAX];
-   struct Packet rpkt[NMAX];
    
    npkt=0;
 while (npkt<ULONG_MAX){

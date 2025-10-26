@@ -3,12 +3,15 @@
 #include<string.h>
 #include<math.h>
 #include "packets.h"
+
 int main() {
    unsigned short int *word;
    unsigned long long int i,j,npkt;
    unsigned short int length;// length in bytes-1
    char fname[32];
+   FILE *wf;
    unsigned char mybyte;
+   struct Packet wpkt[NMAX];
    // decide the number of packets
    do{
       puts("enter n. of packets");
@@ -20,7 +23,7 @@ int main() {
    puts("enter packet length-1");
    scanf("%hd",&length);
    // Open the binary file for writing
-   FILE *wf = fopen(fname, "wb");
+   wf = fopen(fname, "wb");
 
    // Check if file open successfully
    if (!wf) { 
@@ -28,7 +31,6 @@ int main() {
        return 1;
    }
    // Initialize packet data
-   struct Packet wpkt[NMAX];
  for(i=0;i<npkt;i++){
    wpkt[i%NMAX].ver = 0;
    wpkt[i%NMAX].type = 0;

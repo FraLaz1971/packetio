@@ -33,6 +33,15 @@
 #define MAXDATA 32768
 #define MAXWORD 32771
 #define TIMEOFFS 935280002.649755
+
+#if defined(_MSC_VER) && _MSC_VER < 1900
+double vc_round(double x);
+#endif
+#if defined(_MSC_VER) && _MSC_VER < 1900
+    /* Before Visual Studio 2015 (VC14) there was no snprintf */
+    #define snprintf _snprintf
+#endif
+
 static int debug=0;
 
 struct AGL_DFH{
