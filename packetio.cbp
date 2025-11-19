@@ -3,46 +3,102 @@
 	<FileVersion major="1" minor="6" />
 	<Project>
 		<Option title="packetio" />
+		<Option makefile="Makefile.vc" />
+		<Option makefile_is_custom="1" />
 		<Option pch_mode="2" />
 		<Option compiler="msvc8" />
 		<Build>
-			<Target title="Debug">
-				<Option output="Debug/bin/packetio" prefix_auto="1" extension_auto="1" />
-				<Option object_output="Debug/obj/" />
-				<Option type="1" />
+			<Target title="All">
+				<Option output="writepackets" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
 				<Option compiler="msvc8" />
-				<Compiler>
-					<Add option="/Zi" />
-					<Add option="/D_DEBUG" />
-					<Add option="/MDd" />
-				</Compiler>
-				<Linker>
-					<Add option="/DEBUG" />
-					<Add library="msvcrtd.lib" />
-					<Add library="msvcprtd.lib" />
-				</Linker>
-			</Target>
-			<Target title="Release">
-				<Option output="Release/bin/packetio" prefix_auto="1" extension_auto="1" />
-				<Option object_output="Release/obj/" />
-				<Option type="1" />
-				<Option compiler="msvc8" />
-				<Compiler>
-					<Add option="/Ox" />
-					<Add option="/DNDEBUG" />
-					<Add option="/MD" />
-				</Compiler>
-				<Linker>
-					<Add library="msvcrt.lib" />
-					<Add library="msvcprt.lib" />
-				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="/W3" />
 		</Compiler>
+		<Unit filename="countDDSpackets.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="countpackets.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="dds2ccsds.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="extractframe1.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="extractframes.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="packets.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="packets.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="readDDSpackets.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="readagilepackets.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="readpackets.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="realloctest.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="sortpackets.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="strip_prefix.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="swappacket.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="testcopypkt.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="timeex.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="timex2.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="writeDDSpackets.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="writeagilepackets.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="writepackets.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Extensions>
 			<code_completion />
