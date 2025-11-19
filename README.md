@@ -37,3 +37,9 @@ digiting
 `menu`
 ###
 from the command line cmd or on codeblocks from the tools item called menu.
+###
+the following line extract headers from science packets and save it on a log file temp.log
+###
+`grep -A 7 -B 23 "s.type: 21" bc-boa-flazzaro-20251016T082447.log > temp.log`
+###
+
